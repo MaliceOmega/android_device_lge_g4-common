@@ -176,3 +176,19 @@ BOARD_HARDWARE_CLASS := $(LOCAL_PATH)/cmhw/
 
 # inherit from the proprietary version
 -include vendor/lge/g4-common/BoardConfigVendor.mk
+
+# BlissPop Configs
+TARGET_TC_ROM := 4.9-linaro
+TARGET_TC_KERNEL := 4.9-linaro
+BLISSIFY := true
+BLISS_O3 := true
+BLISS_STRICT := false
+BLISS_GRAPHITE := true
+BLISS_KRAIT := false
+BLISS_PIPE := true
+TARGET_GCC_VERSION_EXP := $(TARGET_TC_ROM)
+TARGET_KERNEL_CUSTOM_TOOLCHAIN := $(TARGET_TC_KERNEL)
+WITH_LZMA_OTA := true
+TARGET_ENABLE_UKM := true
+TARGET_USE_QCOM_BIONIC_OPTIMIZATION := true
+TARGET_USE_KRAIT_PLD_SET := false
