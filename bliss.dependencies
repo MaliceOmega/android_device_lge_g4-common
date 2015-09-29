@@ -18,8 +18,8 @@
     "revision": "cm-12.1"
   },
   {
-    "remote": "github",
-    "repository": "lg-devs/android_device_qcom_common",
+    "remote": "cm",
+    "repository": "android_device_qcom_common",
     "target_path": "device/qcom/common",
     "revision": "cm-12.1"
   }
