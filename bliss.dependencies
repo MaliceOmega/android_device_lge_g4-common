@@ -12,8 +12,8 @@
     "revision": "cm-12.1"
   },
   {
-    "remote": "github",
-    "repository": "lg-devs/android_kernel_lge_msm8992",
+    "remote": "TeamBliss-Devices",
+    "repository": "android_kernel_lge_msm8992",
     "target_path": "kernel/lge/msm8992",
     "revision": "cm-12.1"
   },
