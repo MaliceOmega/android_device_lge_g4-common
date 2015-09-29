@@ -9,18 +9,27 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 
 # Audio
 PRODUCT_PROPERTY_OVERRIDES += \
-    mm.enable.smoothstreaming=true \
-    mm.enable.qcom_parser=3314291 \
-    audio.offload.buffer.size.kb=1024 \
-    av.offload.enable=true \
-    av.streaming.offload.enable=true \
-    use.voice.path.for.pcm.voip=true \
-    audio.offload.multiple.enabled=true \
+    audio.offload.buffer.size.kb=32 \
     audio.offload.gapless.enabled=true \
-    media.aac_51_output_enabled=true \
+    audio.offload.multiple.enabled=false \
     audio.offload.pcm.16bit.enable=false \
-    audio.offload.pcm.24bit.enable=true
+    audio.offload.pcm.24bit.enable=true \
+    audio.offload.pcm.enable=true \
+    av.offload.enable=false \
+    av.streaming.offload.enable=false \
+    persist.audio.fluence.voicecall=true \
+    persist.audio.fluence.voicerec=false \
+    persist.audio.fluence.speaker=true \
+    ro.qc.sdk.audio.fluencetype=fluence \
+    ro.qc.sdk.audio.ssr=false \
+    tunnel.audio.encode=false \
+    use.voice.path.for.pcm.voip=false
 
+
+# Camera
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    camera.disable_zsl_mode=1
+        
 # Display
 #
 # OpenGLES:

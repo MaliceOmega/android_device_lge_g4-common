@@ -113,41 +113,45 @@ on boot
 	write /sys/devices/system/cpu/cpu0/online 1
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/module/msm_thermal/core_control/enabled 1
-    
-    # bluetooth
-    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+# LGE_CHANGE_S, [BT][younghyun.kwon@lge.com], 2013-04-10, Bluetooth Permission
+#    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
     chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwake
     chown bluetooth net_bt_stack /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
-    chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
-    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_lpm
-    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_btwrite
-    chown system system /sys/module/sco/parameters/disable_esco
-    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
-    chmod 0660 /sys/module/bluetooth_power/parameters/power
-    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+    chown bluetooth net_bt_stack /proc/bluet0ooth/sleep/preproto
+#    chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
+#    chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
+#    chown system system /sys/module/sco/parameters/disable_esco
+#    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+#    chmod 0660 /sys/module/bluetooth_power/parameters/power
+#    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
     chmod 0660 /sys/class/rfkill/rfkill0/state
     chmod 0660 /proc/bluetooth/sleep/btwake
     chmod 0660 /proc/bluetooth/sleep/proto
-    chmod 0644 /proc/bluetooth/sleep/btwrite
-    chmod 0644 /proc/bluetooth/sleep/lpm
-    chown bluetooth bluetooth /dev/ttyHS0
+    chmod 0660 /proc/bluetooth/sleep/preproto
+#    chmod 0660 /proc/bluetooth/sleep/lpm
+#    chmod 0660 /proc/bluetooth/sleep/btwrite
+    chown bluetooth net_bt_stack /dev/ttyHS99
+    chown bluetooth net_bt_stack /dev/ttyHS0
     chmod 0660 /sys/module/hci_uart/parameters/ath_lpm
     chmod 0660 /sys/module/hci_uart/parameters/ath_btwrite
-    chown bluetooth net_bt_stack /dev/ttyHS99
+    chmod 0660 /dev/ttyHS99
     chmod 0660 /dev/ttyHS0
-    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+#    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+#    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+# LGE_CHANGE_E, [BT][younghyun.kwon@lge.com], 2013-04-10
 
-    chmod 0660 /dev/ttyHS2
-    chown bluetooth bluetooth /dev/ttyHS2
+    # Feature chip vendor : brcm
+    setprop bluetooth.chip.vendor brcm
 
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/device/extldo
-    chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
-    
-    
+    # For BCM FM Radio
+    setprop ro.fm.module BCM
+
+    chown bluetooth net_bt_stack /dev/btlock
+    chmod 0600 /dev/btlock
+
+
   # Feature chip vendor : brcm
     setprop bluetooth.chip.vendor brcm
 
@@ -158,18 +162,15 @@ on boot
     chown wifi wifi /dev/rfkill
     chmod 0600 /dev/rfkill
 
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/device/extldo
+    chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
 
     #Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
-    chmod 2770 /dev/socket/qmux_radio
     mkdir /dev/socket/qmux_audio 0770 media audio
-    chmod 2770 /dev/socket/qmux_audio
     mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
-    chmod 2770 /dev/socket/qmux_bluetooth
     mkdir /dev/socket/qmux_gps 0770 gps gps
-    chmod 2770 /dev/socket/qmux_gps
     mkdir /dev/socket/qmux_nfc 0770 nfc nfc
-    chmod 2770 /dev/socket/qmux_nfc
 
     setprop wifi.interface wlan0
 
@@ -328,8 +329,9 @@ on boot
 # START touch_knock_on
 	chown system system /sys/devices/virtual/input/lge_touch/lpwg_data
 	chmod 664 /sys/devices/virtual/input/lge_touch/lpwg_data
-	chown system system /sys/devices/virtual/input/lge_touch/lpwg_notify
+	chown system radio /sys/devices/virtual/input/lge_touch/lpwg_notify
 	chmod 664 /sys/devices/virtual/input/lge_touch/lpwg_notify
+	write /sys/devices/virtual/input/lge_touch/lpwg_notify "1 1 0 0"
 	chown system system /sys/devices/virtual/input/lge_touch/lpwg_test_info
 	chmod 644 /sys/devices/virtual/input/lge_touch/lpwg_test_info
 	chown system system /sys/devices/virtual/input/lge_touch/lpwg_test_ctrl
@@ -342,6 +344,7 @@ on boot
     lge_chcon_recursive /data/property u:object_r:property_data_file:s0
     lge_chcon_recursive /data/security u:object_r:security_file:s0
     start chcon_keystore
+    
 
     chown media media /sys/devices/soc.0/qcom,msm-pcm-routing.39/cfg_string_rx
     chown media media /sys/devices/soc.0/qcom,msm-pcm-routing.39/cfg_string_tx
@@ -356,6 +359,7 @@ on boot
 # Begin SRE Display New Feature
     chown system system /sys/class/sre/sre_func/sre_status
     chmod 644 /sys/class/sre/sre_func/sre_status
+
 # End SRE Display New Feature
 
 # Power_BSP, if need, control max_frequencies for peak current issue
@@ -370,7 +374,7 @@ on boot
    chmod 0644 /sys/devices/virtual/lg_rgb_led/use_patterns/onoff_patterns
    chown system system /sys/devices/virtual/lg_rgb_led/use_patterns/setting
    chmod 0644 /sys/devices/virtual/lg_rgb_led/use_patterns/setting
-   write /sys/devices/virtual/lg_rgb_led/use_patterns/setting 1
+   write /sys/devices/virtual/lg_rgb_led/use_patterns/setting 0
 # For QC2.0
    chown root system /sys/module/charger_controller/parameters/quick_charging_state
    chmod 0664 /sys/module/charger_controller/parameters/quick_charging_state
@@ -423,7 +427,7 @@ on post-fs-data
 
     # Create directory for TZ Apps
     mkdir /data/misc/qsee 0770 system system
-    
+
     # NFC local data and nfcee xml storage
     mkdir /data/nfc 0770 nfc nfc
     mkdir /data/nfc/param 0770 nfc nfc
@@ -535,6 +539,13 @@ on post-fs-data
     chmod 2755 /data/misc/perfd
     mkdir /data/system/perfd 0770 root system
     chmod 2770 /data/system/perfd
+
+    # Create directory used by sensor subsystem
+    mkdir /persist/sensors 0775 system root
+    chmod 0664 /persist/sensors/sensors_settings
+    chown system root /persist/sensors/sensors_settings
+    mkdir /data/misc/sensors 0775 system system
+    restorecon_recursive /data/misc/sensors
 
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
@@ -730,6 +741,7 @@ service sensors /system/bin/sensors.qcom
     class late_start
     user root
     group root
+    disabled
 
 on property:ro.use_data_netmgrd=false
     # netmgr not supported on specific target
@@ -833,7 +845,7 @@ service dhcpcd_bnep3 /system/bin/dhcpcd -BKLG
 service dhcpcd_bnep4 /system/bin/dhcpcd -BKLG
     disabled
     oneshot
-
+    
 service fm_dl /system/bin/sh /system/etc/init.qcom.fm.sh
     class late_start
     user root
@@ -856,11 +868,6 @@ on property:drmdiag.load=1
 
 on property:drmdiag.load=0
     stop drmdiag
-
-service qcom-sh /system/bin/sh /init.qcom.sh
-    class late_start
-    user root
-    oneshot
 
 service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     class late_start
@@ -1010,7 +1017,6 @@ on property:persist.sys.qlogd=0
 service vm_bms /system/bin/vm_bms
     user root
     group root
-    disabled
 
 service msm_irqbalance /system/bin/msm_irqbalance -f /system/vendor/etc/msm_irqbalance.conf
    class core
