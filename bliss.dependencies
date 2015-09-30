@@ -8,7 +8,7 @@
   {
     "remote": "github",
     "repository": "lg-g4-dev/android_kernel_lge_g4",
-    "target_path": "kernel/lge/g4",
+    "target_path": "kernel/lge/msm8992",
     "revision": "master"
   },
   {
