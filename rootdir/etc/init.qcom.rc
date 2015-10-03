@@ -113,42 +113,34 @@ on boot
 	write /sys/devices/system/cpu/cpu0/online 1
     write /sys/devices/system/cpu/cpu1/online 1
     write /sys/module/msm_thermal/core_control/enabled 1
- chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
-    chown bluetooth net_bt /sys/class/rfkill/rfkill0/type
-    chown bluetooth net_bt /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_lpm
-    chown bluetooth bluetooth /sys/module/hci_uart/parameters/ath_btwrite
-    chown system system /sys/module/sco/parameters/disable_esco
-    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
-    chmod 0660 /sys/module/bluetooth_power/parameters/power
-    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+# LGE_CHANGE_S, [BT][younghyun.kwon@lge.com], 2013-04-10, Bluetooth Permission
+#    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/type
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/state
+    chown bluetooth net_bt_stack /proc/bluetooth/sleep/btwake
+    chown bluetooth net_bt_stack /proc/bluetooth/sleep/proto
+    chown bluetooth net_bt_stack /proc/bluet0ooth/sleep/preproto
+#    chown bluetooth bluetooth /proc/bluetooth/sleep/lpm
+#    chown bluetooth bluetooth /proc/bluetooth/sleep/btwrite
+#    chown system system /sys/module/sco/parameters/disable_esco
+#    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+#    chmod 0660 /sys/module/bluetooth_power/parameters/power
+#    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
     chmod 0660 /sys/class/rfkill/rfkill0/state
+    chmod 0660 /proc/bluetooth/sleep/btwake
     chmod 0660 /proc/bluetooth/sleep/proto
-    chown bluetooth net_bt /dev/ttyHS0
+    chmod 0660 /proc/bluetooth/sleep/preproto
+#    chmod 0660 /proc/bluetooth/sleep/lpm
+#    chmod 0660 /proc/bluetooth/sleep/btwrite
+    chown bluetooth net_bt_stack /dev/ttyHS99
+    chown bluetooth net_bt_stack /dev/ttyHS0
     chmod 0660 /sys/module/hci_uart/parameters/ath_lpm
     chmod 0660 /sys/module/hci_uart/parameters/ath_btwrite
+    chmod 0660 /dev/ttyHS99
     chmod 0660 /dev/ttyHS0
-    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
-
-    chmod 0660 /dev/ttyHS2
-    chown bluetooth bluetooth /dev/ttyHS2
-
-    chown bluetooth net_bt /sys/class/rfkill/rfkill0/device/extldo
-    chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
-
-    #Create QMUX deamon socket area
-    mkdir /dev/socket/qmux_radio 0770 radio radio
-    chmod 2770 /dev/socket/qmux_radio
-    mkdir /dev/socket/qmux_audio 0770 media audio
-    chmod 2770 /dev/socket/qmux_audio
-    mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
-    chmod 2770 /dev/socket/qmux_bluetooth
-    mkdir /dev/socket/qmux_gps 0770 gps gps
-    chmod 2770 /dev/socket/qmux_gps
-    mkdir /dev/socket/qmux_nfc 0770 nfc nfc
-    chmod 2770 /dev/socket/qmux_nfc
+#    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+#    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+# LGE_CHANGE_E, [BT][younghyun.kwon@lge.com], 2013-04-10
 
     # Feature chip vendor : brcm
     setprop bluetooth.chip.vendor brcm
@@ -159,9 +151,27 @@ on boot
     chown bluetooth net_bt_stack /dev/btlock
     chmod 0600 /dev/btlock
 
+
+  # Feature chip vendor : brcm
+    setprop bluetooth.chip.vendor brcm
+
+    # For BCM FM Radio
+    setprop ro.fm.module BCM
+    
     # WiFi
     chown wifi wifi /dev/rfkill
     chmod 0600 /dev/rfkill
+
+    chown bluetooth net_bt_stack /sys/class/rfkill/rfkill0/device/extldo
+    chmod 0660 /sys/class/rfkill/rfkill0/device/extldo
+
+    #Create QMUX deamon socket area
+    mkdir /dev/socket/qmux_radio 0770 radio radio
+    mkdir /dev/socket/qmux_audio 0770 media audio
+    mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
+    mkdir /dev/socket/qmux_gps 0770 gps gps
+    mkdir /dev/socket/qmux_nfc 0770 nfc nfc
+
     setprop wifi.interface wlan0
 
 #   Define TCP buffer sizes for various networks
@@ -297,35 +307,6 @@ on boot
 
     # exfat
     insmod /system/lib/modules/texfat.ko
-    
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_rate
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/timer_slack
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/min_sample_time
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/hispeed_freq
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/target_loads
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/go_hispeed_load
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/above_hispeed_delay
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/input_boost
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/input_boost
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/boostpulse_duration
-    chown system system /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-    chmod 0660 /sys/devices/system/cpu/cpufreq/interactive/io_is_busy
-
-    # Assume SMP uses shared cpufreq policy for all CPUs
-    chown system system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-    chmod 0660 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-
 
 # START touch_driver
 	chown system system /sys/devices/virtual/input/lge_touch/incoming_call
@@ -431,8 +412,6 @@ on post-fs
     chown root log /proc/slabinfo
     chmod 0440 /proc/slabinfo
 
-    mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
-    
     chown system carrier /carrier
     chmod 0771 /carrier
     #restorecon carrier partition.
@@ -915,24 +894,13 @@ service battery_monitor /system/bin/battery_monitor
     group system
     disabled
 
-service ril-daemon /system/bin/rild
-    class main
-    socket rild stream 660 root radio
-    socket rild-debug stream 660 radio system
-    user root
-#[START][P6][LGE_VSS_QCCI][changhwan.lee] Enable create socket for IPC router
-#    group radio cache inet misc audio log qcom_diag
-    group radio cache inet misc audio log qcom_diag net_raw
-#[END][P6][LGE_VSS_QCCI][changhwan.lee] Enable create socket for IPC router
-
 service ril-daemon2 /system/bin/rild -c 2
     class main
     socket rild2 stream 660 root radio
     socket rild-debug2 stream 660 radio system
     user root
     group radio cache inet misc audio sdcard_r sdcard_rw diag qcom_diag log
-    disabled
-    
+
 service ril-daemon3 /system/bin/rild -c 3
     class main
     socket rild3 stream 660 root radio
